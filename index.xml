@@ -10,5 +10,45 @@
 	<atom:link href="https://pakhomovalexander.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     
+    <item>
+      <title></title>
+      <link>https://pakhomovalexander.github.io/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://pakhomovalexander.github.io/about/</guid>
+      <description>&lt;h2 id=&#34;who-am-i&#34;&gt;Who am I&lt;/h2&gt;
+&lt;p&gt;Hello! I am Pakhomov Alexander, a software engineer. I am a passionate programmer who wants to ship better ideas to the world.&lt;/p&gt;
+&lt;h2 id=&#34;how-can-i-help-you&#34;&gt;How can I help you&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;I write to &lt;a href=&#34;https://t.me/toxic_enterprise&#34;&gt;toxic telegram channel&lt;/a&gt; my thoughts and share useful articles. [RU only]&lt;/li&gt;
+&lt;li&gt;I notice great tools for engineers &lt;a href=&#34;https://t.me/tools_for_engineers&#34;&gt;here&lt;/a&gt;. [RU only]&lt;/li&gt;
+&lt;li&gt;I write articles to &lt;a href=&#34;https://pakhomovalexander.github.io/ru/posts&#34;&gt;Blog&lt;/a&gt;. It can be empty for a while :) [RU only]&lt;/li&gt;
+&lt;li&gt;I can become your mentor at &lt;a href=&#34;https://solvery.io/mentor/alexandr_pakhomov&#34;&gt;Solvery&lt;/a&gt;. [EN/RU]&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;contacts&#34;&gt;Contacts&lt;/h2&gt;
+&lt;p&gt;You can contact me here &lt;a href=&#34;mailto:apkhmv@gmail.com&#34;&gt;apkhmv@gmail.com&lt;/a&gt; or via &lt;a href=&#34;https://t.me/AlexandrPakhomov&#34;&gt;telegram&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title></title>
+      <link>https://pakhomovalexander.github.io/ru/about/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://pakhomovalexander.github.io/ru/about/</guid>
+      <description>&lt;h2 id=&#34;кто-я&#34;&gt;Кто я&lt;/h2&gt;
+&lt;p&gt;Привет! Меня зовут Пахомов Александр. Я инженер, который не равнодушен к тому, что делает. Пишу код на java.&lt;/p&gt;
+&lt;h2 id=&#34;чем-могу-быть-полезен&#34;&gt;Чем могу быть полезен&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Пишу в &lt;a href=&#34;https://t.me/toxic_enterprise&#34;&gt;душный телеграм канал&lt;/a&gt; мысли, подходы к разработке и делюсь полезными статьями.&lt;/li&gt;
+&lt;li&gt;Оставляю полезные инструменты в другом &lt;a href=&#34;https://t.me/tools_for_engineers&#34;&gt;телеграм канале&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Пишу статьи в раздел &lt;a href=&#34;https://pakhomovalexander.github.io/ru/posts&#34;&gt;Блог&lt;/a&gt;. Не пугайтесь, если он пуст, так бывает.&lt;/li&gt;
+&lt;li&gt;Могу стать вашим &lt;a href=&#34;https://solvery.io/mentor/alexandr_pakhomov&#34;&gt;ментором на Solvery&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&#34;сотрудничество&#34;&gt;Сотрудничество&lt;/h2&gt;
+&lt;p&gt;Пишите на почту &lt;a href=&#34;mailto:apkhmv@gmail.com&#34;&gt;apkhmv@gmail.com&lt;/a&gt; или в &lt;a href=&#34;https://t.me/AlexandrPakhomov&#34;&gt;телеграм&lt;/a&gt;.&lt;/p&gt;
+</description>
+    </item>
+    
   </channel>
 </rss>
