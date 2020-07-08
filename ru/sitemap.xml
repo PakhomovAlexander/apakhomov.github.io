@@ -3,6 +3,21 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://pakhomovalexander.github.io/ru/about/</loc>
+    <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://pakhomovalexander.github.io/about/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://pakhomovalexander.github.io/ru/about/"
+                />
+  </url>
+  
+  <url>
     <loc>https://pakhomovalexander.github.io/ru/</loc>
     <xhtml:link
                 rel="alternate"

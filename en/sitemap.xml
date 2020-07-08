@@ -5,6 +5,16 @@
   <url>
     <loc>https://pakhomovalexander.github.io/about/</loc>
     <priority>0</priority>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://pakhomovalexander.github.io/ru/about/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://pakhomovalexander.github.io/about/"
+                />
   </url>
   
   <url>
