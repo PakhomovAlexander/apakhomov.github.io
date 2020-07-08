@@ -237,10 +237,18 @@
 &lt;/div&gt;&lt;hr&gt;
 &lt;h2 id=&#34;решение----smartbuilder-&#34;&gt;Решение &amp;ndash; SmartBuilder 👷‍♂️&lt;/h2&gt;
 &lt;h3 id=&#34;как-это-выглядит-в-итоге&#34;&gt;Как это выглядит в итоге&lt;/h3&gt;
+&lt;p&gt;Создание &lt;code&gt;Person&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-style:italic&#34;&gt;// Given
 &lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;var person = given(
         person().firstName(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Alexander&amp;#34;&lt;/span&gt;)
                 .lastName(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Pakhomov&amp;#34;&lt;/span&gt;)
+                .address(address().country(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Russia&amp;#34;&lt;/span&gt;).city(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Moscow&amp;#34;&lt;/span&gt;))
+        );
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Создание &lt;code&gt;Organisation&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-style:italic&#34;&gt;// Given
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;var organisation = given(
+        organisation()
+                .organisationName(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Apple Inc&amp;#34;&lt;/span&gt;)
                 .address(address().country(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Russia&amp;#34;&lt;/span&gt;).city(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Moscow&amp;#34;&lt;/span&gt;))
         );
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;имплементация&#34;&gt;Имплементация&lt;/h3&gt;
@@ -248,7 +256,7 @@
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;GenericBuilder&lt;/span&gt;&amp;lt;T, B &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; GenericBuilder&amp;lt;T, B&amp;gt;&amp;gt; {
     T build();
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Абстрактный билдер для &lt;code&gt;AbstractiCustormer&lt;/code&gt;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Абстрактный билдер для &lt;code&gt;AbstractCustormer&lt;/code&gt;&lt;/p&gt;
 &lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;CustomerBuilder&lt;/span&gt;&amp;lt;T &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; AbstractCustomer, B &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; CustomerBuilder&amp;lt;T, B&amp;gt;&amp;gt;
         &lt;span style=&#34;font-weight:bold&#34;&gt;implements&lt;/span&gt; GenericBuilder&amp;lt;T,B&amp;gt; {
 

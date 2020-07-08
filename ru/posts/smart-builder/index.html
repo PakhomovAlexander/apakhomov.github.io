@@ -368,10 +368,18 @@
 </div><hr>
 <h2 id="решение----smartbuilder-">Решение &ndash; SmartBuilder 👷‍♂️</h2>
 <h3 id="как-это-выглядит-в-итоге">Как это выглядит в итоге</h3>
+<p>Создание <code>Person</code></p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-style:italic">// Given
 </span><span style="font-style:italic"></span>var person = given(
         person().firstName(<span style="font-style:italic">&#34;Alexander&#34;</span>)
                 .lastName(<span style="font-style:italic">&#34;Pakhomov&#34;</span>)
+                .address(address().country(<span style="font-style:italic">&#34;Russia&#34;</span>).city(<span style="font-style:italic">&#34;Moscow&#34;</span>))
+        );
+</code></pre></div><p>Создание <code>Organisation</code></p>
+<div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-style:italic">// Given
+</span><span style="font-style:italic"></span>var organisation = given(
+        organisation()
+                .organisationName(<span style="font-style:italic">&#34;Apple Inc&#34;</span>)
                 .address(address().country(<span style="font-style:italic">&#34;Russia&#34;</span>).city(<span style="font-style:italic">&#34;Moscow&#34;</span>))
         );
 </code></pre></div><h3 id="имплементация">Имплементация</h3>
@@ -379,7 +387,7 @@
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-weight:bold">public</span> <span style="font-weight:bold">interface</span> <span style="font-weight:bold">GenericBuilder</span>&lt;T, B <span style="font-weight:bold">extends</span> GenericBuilder&lt;T, B&gt;&gt; {
     T build();
 }
-</code></pre></div><p>Абстрактный билдер для <code>AbstractiCustormer</code></p>
+</code></pre></div><p>Абстрактный билдер для <code>AbstractCustormer</code></p>
 <div class="highlight"><pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-java" data-lang="java"><span style="font-weight:bold">public</span> <span style="font-weight:bold">abstract</span> <span style="font-weight:bold">class</span> <span style="font-weight:bold">CustomerBuilder</span>&lt;T <span style="font-weight:bold">extends</span> AbstractCustomer, B <span style="font-weight:bold">extends</span> CustomerBuilder&lt;T, B&gt;&gt;
         <span style="font-weight:bold">implements</span> GenericBuilder&lt;T,B&gt; {
 
