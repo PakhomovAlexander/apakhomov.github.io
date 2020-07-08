@@ -6,9 +6,46 @@
     <description>Recent content in Tags on apakhomov</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en</language>
+    <lastBuildDate>Wed, 08 Jul 2020 16:40:00 +0300</lastBuildDate>
     
 	<atom:link href="https://pakhomovalexander.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>dsl</title>
+      <link>https://pakhomovalexander.github.io/tags/dsl/</link>
+      <pubDate>Wed, 08 Jul 2020 16:40:00 +0300</pubDate>
+      
+      <guid>https://pakhomovalexander.github.io/tags/dsl/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>java</title>
+      <link>https://pakhomovalexander.github.io/tags/java/</link>
+      <pubDate>Wed, 08 Jul 2020 16:40:00 +0300</pubDate>
+      
+      <guid>https://pakhomovalexander.github.io/tags/java/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>JUnit5</title>
+      <link>https://pakhomovalexander.github.io/tags/junit5/</link>
+      <pubDate>Wed, 08 Jul 2020 16:40:00 +0300</pubDate>
+      
+      <guid>https://pakhomovalexander.github.io/tags/junit5/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tdd</title>
+      <link>https://pakhomovalexander.github.io/tags/tdd/</link>
+      <pubDate>Wed, 08 Jul 2020 16:40:00 +0300</pubDate>
+      
+      <guid>https://pakhomovalexander.github.io/tags/tdd/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>

@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>tdd on apakhomov</title>
+    <link>https://pakhomovalexander.github.io/tags/tdd/</link>
+    <description>Recent content in tdd on apakhomov</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en</language>
+    <lastBuildDate>Wed, 08 Jul 2020 16:40:00 +0300</lastBuildDate>
+    
+	<atom:link href="https://pakhomovalexander.github.io/tags/tdd/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>TDD. SmartBuilder паттерн</title>
+      <link>https://pakhomovalexander.github.io/ru/posts/smart-builder/</link>
+      <pubDate>Wed, 08 Jul 2020 16:40:00 +0300</pubDate>
+      
+      <guid>https://pakhomovalexander.github.io/ru/posts/smart-builder/</guid>
+      <description>&lt;h2 id=&#34;зачем&#34;&gt;Зачем&lt;/h2&gt;
+&lt;p&gt;Действительно, зачем? Зачем делать серию статей о &lt;a href=&#34;https://ru.wikipedia.org/wiki/%D0%A0%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D0%BA%D0%B0_%D1%87%D0%B5%D1%80%D0%B5%D0%B7_%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5&#34;&gt;TDD&lt;/a&gt;?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;📢 На конференциях об этом говорят.&lt;/li&gt;
+&lt;li&gt;🎓 На собеседовании ответить за TDD могут.&lt;/li&gt;
+&lt;li&gt;💪 Кто-то даже пробовал.&lt;/li&gt;
+&lt;li&gt;❤️ Кому-то даже понравилось.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;А кто пробовал использовать TDD на большом, закостенелом проекте?  Где размер объектов подогревает стулья, а после прочтения ТЗ хочется выйти в окно. Ну и как? Работает тест дривен магия? Скорее всего нет. 💩&lt;/p&gt;
+&lt;p&gt;Расскажу как не вываливаться из цикла red-green-refactor на том самом большом проекте.&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&#34;что-мешает&#34;&gt;Что мешает&lt;/h2&gt;
+&lt;p&gt;Для комфортного кодирования в потоке red-green-refactor
+тесты должны быть небольшого размера, методы простыми для восприятия.&lt;/p&gt;
+&lt;p&gt;На словах просто, а как насчет кода?&lt;/p&gt;
+&lt;h3 id=&#34;исходные-данные&#34;&gt;Исходные данные&lt;/h3&gt;
+&lt;p&gt;Допустим доменная модель состоит из &lt;code&gt;Person&lt;/code&gt; и &lt;code&gt;Organisation&lt;/code&gt;. На деле в разы больше, но для примера достаточно.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;AbstractCustomer&lt;/span&gt; {
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; Address address;
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;abstract&lt;/span&gt; String getWelcomeName();
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; String getCountry() {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; address.getCountry();
+    }
+
+    &lt;span style=&#34;font-style:italic&#34;&gt;// geters and setters
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;Organisation&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; AbstractCustomer {
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; String organisationName;
+
+    @Override
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; String getWelcomeName() {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; organisationName;
+    }
+
+
+    &lt;span style=&#34;font-style:italic&#34;&gt;// geters and setters
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;Person&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; AbstractCustomer {
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; String firstName;
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; String lastName;
+
+    @Override
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; String getWelcomeName() {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; firstName + &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34; &amp;#34;&lt;/span&gt; + lastName;
+    }
+
+
+    &lt;span style=&#34;font-style:italic&#34;&gt;// geters and setters
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;Address&lt;/span&gt; {
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; String street;
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; String city;
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; String country;
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;&#34;&gt;int&lt;/span&gt; house;
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; &lt;span style=&#34;&#34;&gt;int&lt;/span&gt; index;
+
+    &lt;span style=&#34;font-style:italic&#34;&gt;// getters and setters
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Для создания объектов используется паттерн JavaBeans. Это когда конструктор пустой, а объект настраивается через сеттеры. Да, не лучший выбор, но и проект с историческим наследием. &lt;a href=&#34;https://medium.com/@muradhajiyev/why-builder-pattern-not-telescoping-or-javabeans-6daa689f418&#34;&gt;Вот статья&lt;/a&gt; о разных видах создания объектов в java. Спойлер: используйте билдер.&lt;/p&gt;
+&lt;p&gt;Мы будем работать с тем, что есть. 💁‍♀️&lt;/p&gt;
+&lt;h4 id=&#34;задача&#34;&gt;Задача.&lt;/h4&gt;
+&lt;p&gt;Разработать сервис Hostel. Hostel умеет приветствовать клиентов фразой &lt;code&gt;&amp;quot;Welcome in hoselName, customer.getWelcomeName(). customer.getCountry() is great!&amp;quot;&lt;/code&gt;. Вот и вся задача.&lt;/p&gt;
+&lt;p&gt;Погнали!&lt;/p&gt;
+&lt;h3 id=&#34;первый-заход&#34;&gt;Первый заход&lt;/h3&gt;
+&lt;p&gt;Определяем интерфейс Hostel&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;Hostel&lt;/span&gt; {
+    String getWelcome(AbstractCustomer customer);
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;И дефолтную имплементацию&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;HostelImpl&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;implements&lt;/span&gt; Hostel {
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; String hostelName;
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; HostelImpl(String hostelName) {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;.hostelName = hostelName;
+    }
+
+    @Override
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; String getWelcome(AbstractCustomer customer) {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;null&lt;/span&gt;;
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Пишем тест&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;HostelImplTestWithoutSmartBuilder&lt;/span&gt; {
+    Hostel service;
+
+    @BeforeEach
+    &lt;span style=&#34;&#34;&gt;void&lt;/span&gt; setUp() {
+        service = &lt;span style=&#34;font-weight:bold&#34;&gt;new&lt;/span&gt; HostelImpl(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Best hostel&amp;#34;&lt;/span&gt;);
+    }
+
+    @Test
+    &lt;span style=&#34;&#34;&gt;void&lt;/span&gt; shouldWelcomePerson() {
+        &lt;span style=&#34;font-style:italic&#34;&gt;// Given
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;        Address address = &lt;span style=&#34;font-weight:bold&#34;&gt;new&lt;/span&gt; Address();
+        address.setCountry(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Russia&amp;#34;&lt;/span&gt;);
+        address.setCity(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Moscow&amp;#34;&lt;/span&gt;);
+        &lt;span style=&#34;font-style:italic&#34;&gt;// And
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;        Person person = &lt;span style=&#34;font-weight:bold&#34;&gt;new&lt;/span&gt; Person();
+        person.setFirstName(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Alexander&amp;#34;&lt;/span&gt;);
+        person.setLastName(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Pakhomov&amp;#34;&lt;/span&gt;);
+        person.setAddress(address);
+
+        &lt;span style=&#34;font-style:italic&#34;&gt;// When
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;        String welcomeMessage = service.getWelcome(person);
+
+        &lt;span style=&#34;font-style:italic&#34;&gt;// Then
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;        assertThat(welcomeMessage).isEqualTo(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Welcome in Best hostel, Alexander Pakhomov. Russia is great!&amp;#34;&lt;/span&gt;);
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Предлагаю остановиться и посмотреть на тест.
+Для такого простого кейса слишком много кода. Проблема с секцией &lt;code&gt;//Given&lt;/code&gt;.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;
+&lt;table style=&#34;border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;&#34;&gt;&lt;tr&gt;&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;&#34;&gt;
+&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 4
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 5
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 6
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 7
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;11
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;12
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;13
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;14
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;15
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;16
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;17
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;18
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;19
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;20
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;21
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;22
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;23
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;24
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;25
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;26
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;;width:100%&#34;&gt;
+&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;class HostelImplTestWithoutSmartBuilder {
+    Hostel service;
+
+    @BeforeEach
+    void setUp() {
+        service = new HostelImpl(&amp;#34;Best hostel&amp;#34;);
+    }
+
+    @Test
+    void shouldWelcomePerson() {
+&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;        // Given
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;        Address address = new Address();
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;        address.setCountry(&amp;#34;Russia&amp;#34;);
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;        address.setCity(&amp;#34;Moscow&amp;#34;);
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;        // And
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;        Person person = new Person();
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;        person.setFirstName(&amp;#34;Alexander&amp;#34;);
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;        person.setLastName(&amp;#34;Pakhomov&amp;#34;);
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;        person.setAddress(address);
+&lt;/span&gt;
+        // When
+        String welcomeMessage = service.getWelcome(person);
+
+        // Then
+        assertThat(welcomeMessage).isEqualTo(&amp;#34;Welcome in Best hostel, Alexander Pakhomov. Russia is great!&amp;#34;);
+    }
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;p&gt;Слишком громоздко. Суть теста замыливается созданием объектов &lt;code&gt;Person&lt;/code&gt; и &lt;code&gt;Address&lt;/code&gt;. Нужно это упростить.&lt;/p&gt;
+&lt;h3 id=&#34;второй-заход&#34;&gt;Второй заход&lt;/h3&gt;
+&lt;h4 id=&#34;выносим-создание-объектов-в-отдельный-метод&#34;&gt;Выносим создание объектов в отдельный метод&lt;/h4&gt;
+&lt;p&gt;Мысль очевидная и в большинстве случаев работaет. Но когда дело доходит до огромного количества полей у объектов, то получаем что-то вроде&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;Person givenPerson = createSamplePerson(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Saha&amp;#34;&lt;/span&gt;, &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Pushkin&amp;#34;&lt;/span&gt;, &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Russia&amp;#34;&lt;/span&gt;,&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Kolotushkina 29&amp;#34;&lt;/span&gt;, &lt;span style=&#34;font-weight:bold&#34;&gt;null&lt;/span&gt;, &lt;span style=&#34;font-weight:bold&#34;&gt;null&lt;/span&gt;, 0, &lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;&amp;#34;&lt;/span&gt;)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;и это еще лайт. Напомню, проект с историческим наследием!&lt;/p&gt;
+&lt;p&gt;Да, код можно улучшить: вынести параметры в переменные, добавить еще методов. Но это не решение проблемы, это подавление симптомов. Нужно использовать другой механизм создания объектов.&lt;/p&gt;
+&lt;h3 id=&#34;третий-заход&#34;&gt;Третий заход&lt;/h3&gt;
+&lt;h4 id=&#34;используем-builder&#34;&gt;Используем Builder&lt;/h4&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-style:italic&#34;&gt;// Given
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;var person = Person.builder()
+                    .firstName(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Alexander&amp;#34;&lt;/span&gt;)
+                    .lastName(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Pakhomov&amp;#34;&lt;/span&gt;)
+                    .address(Address.builder()
+                                    .country(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Russia&amp;#34;&lt;/span&gt;)
+                                    .city(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Moscow&amp;#34;&lt;/span&gt;)
+                                    .build())
+                    .build()
+        );
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Уже лучше. Параметры именованны и типизированны. Но что тут не так?&lt;/p&gt;
+&lt;p&gt;Мы хотим писать в TDD парадигме. Тесты должны быть простыми, отражать только спецификацию. Мы должны читать тесты как описание поведения объекта. Наличие &lt;code&gt;Person.builder()&lt;/code&gt; и никому (в тесте) не нужных вызовов &lt;code&gt;.build()&lt;/code&gt; усложняет чтение кода.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;div style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;
+&lt;table style=&#34;border-spacing:0;padding:0;margin:0;border:0;width:auto;overflow:auto;display:block;&#34;&gt;&lt;tr&gt;&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;&#34;&gt;
+&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 1
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 2
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 3
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 4
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 5
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 6
+&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 7
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 8
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt; 9
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f&#34;&gt;10
+&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;
+&lt;td style=&#34;vertical-align:top;padding:0;margin:0;border:0;;width:100%&#34;&gt;
+&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-fallback&#34; data-lang=&#34;fallback&#34;&gt;// Given
+&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;var person = Person.builder()
+&lt;/span&gt;                    .firstName(&amp;#34;Alexander&amp;#34;)
+                    .lastName(&amp;#34;Pakhomov&amp;#34;)
+&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;                    .address(Address.builder()
+&lt;/span&gt;                                    .country(&amp;#34;Russia&amp;#34;)
+                                    .city(&amp;#34;Moscow&amp;#34;)
+&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;                                    .build())
+&lt;/span&gt;&lt;span style=&#34;display:block;width:100%;background-color:#e5e5e5&#34;&gt;                    .build()
+&lt;/span&gt;        );
+&lt;/code&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+&lt;/div&gt;
+&lt;/div&gt;&lt;hr&gt;
+&lt;h2 id=&#34;решение----smartbuilder-&#34;&gt;Решение &amp;ndash; SmartBuilder 👷‍♂️&lt;/h2&gt;
+&lt;h3 id=&#34;как-это-выглядит-в-итоге&#34;&gt;Как это выглядит в итоге&lt;/h3&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-style:italic&#34;&gt;// Given
+&lt;/span&gt;&lt;span style=&#34;font-style:italic&#34;&gt;&lt;/span&gt;var person = given(
+        person().firstName(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Alexander&amp;#34;&lt;/span&gt;)
+                .lastName(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Pakhomov&amp;#34;&lt;/span&gt;)
+                .address(address().country(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Russia&amp;#34;&lt;/span&gt;).city(&lt;span style=&#34;font-style:italic&#34;&gt;&amp;#34;Moscow&amp;#34;&lt;/span&gt;))
+        );
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h3 id=&#34;имплементация&#34;&gt;Имплементация&lt;/h3&gt;
+&lt;p&gt;Базовый интерфейс для всех SmartBuilder-ов&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;interface&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;GenericBuilder&lt;/span&gt;&amp;lt;T, B &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; GenericBuilder&amp;lt;T, B&amp;gt;&amp;gt; {
+    T build();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Абстрактный билдер для &lt;code&gt;AbstractiCustormer&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;abstract&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;CustomerBuilder&lt;/span&gt;&amp;lt;T &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; AbstractCustomer, B &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; CustomerBuilder&amp;lt;T, B&amp;gt;&amp;gt;
+        &lt;span style=&#34;font-weight:bold&#34;&gt;implements&lt;/span&gt; GenericBuilder&amp;lt;T,B&amp;gt; {
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; Address address;
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; GenericBuilder&amp;lt;T,B&amp;gt; address(Address address) {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;.address = address;
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;;
+    }
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; GenericBuilder&amp;lt;T,B&amp;gt; address(AddressBuilder&amp;lt;Address&amp;gt; addressBuilder) {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;.address = addressBuilder.build();
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;;
+    }
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;protected&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;abstract&lt;/span&gt; T createCustomer();
+
+    @Override
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; T build() {
+        T customer = createCustomer();
+        customer.setAddress(address);
+
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; customer;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Билдер для &lt;code&gt;Person&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;PersonBuilder&lt;/span&gt;&amp;lt;T &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; Person&amp;gt; &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; CustomerBuilder&amp;lt;T, PersonBuilder&amp;lt;T&amp;gt;&amp;gt; {
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; String firstName;
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; String lastName;
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; PersonBuilder&amp;lt;T&amp;gt; firstName(String firstName) {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;.firstName = firstName;
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;;
+    }
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; PersonBuilder&amp;lt;T&amp;gt; lastName(String lastName) {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;.lastName = lastName;
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;;
+    }
+
+    @Override
+    &lt;span style=&#34;font-weight:bold&#34;&gt;protected&lt;/span&gt; T createCustomer() {
+        T person = (T) &lt;span style=&#34;font-weight:bold&#34;&gt;new&lt;/span&gt; Person();
+        person.setFirstName(&lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;.firstName);
+        person.setLastName(&lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;.lastName);
+
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; person;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Билдер для &lt;code&gt;Organisation&lt;/code&gt;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;OrganisationBuilder&lt;/span&gt;&amp;lt;T &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; Organisation&amp;gt; &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; CustomerBuilder&amp;lt;T, OrganisationBuilder&amp;lt;T&amp;gt;&amp;gt; {
+    &lt;span style=&#34;font-weight:bold&#34;&gt;private&lt;/span&gt; String organisationName;
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; OrganisationBuilder&amp;lt;T&amp;gt; organisationName(String organisationName) {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;.organisationName = organisationName;
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;this&lt;/span&gt;;
+    }
+
+    @Override
+    &lt;span style=&#34;font-weight:bold&#34;&gt;protected&lt;/span&gt; T createCustomer() {
+        T organisation = (T) &lt;span style=&#34;font-weight:bold&#34;&gt;new&lt;/span&gt; Organisation();
+        organisation.setOrganisationName(organisationName);
+
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; organisation;
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;И финалочка - DSL в виде статичных методов&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre style=&#34;background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4&#34;&gt;&lt;code class=&#34;language-java&#34; data-lang=&#34;java&#34;&gt;&lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;class&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;GenericBuilderDsl&lt;/span&gt; {
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;static&lt;/span&gt; &amp;lt;T, B &lt;span style=&#34;font-weight:bold&#34;&gt;extends&lt;/span&gt; GenericBuilder&amp;lt;T, B&amp;gt;&amp;gt; T given(GenericBuilder&amp;lt;T, B&amp;gt; builder) {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; builder.build();
+    }
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;static&lt;/span&gt; PersonBuilder&amp;lt;Person&amp;gt; person() {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;new&lt;/span&gt; PersonBuilder&amp;lt;&amp;gt;();
+    }
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;static&lt;/span&gt; OrganisationBuilder&amp;lt;Organisation&amp;gt; organisation() {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;new&lt;/span&gt; OrganisationBuilder&amp;lt;&amp;gt;();
+    }
+
+    &lt;span style=&#34;font-weight:bold&#34;&gt;public&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;static&lt;/span&gt; AddressBuilder&amp;lt;Address&amp;gt; address() {
+        &lt;span style=&#34;font-weight:bold&#34;&gt;return&lt;/span&gt; &lt;span style=&#34;font-weight:bold&#34;&gt;new&lt;/span&gt; AddressBuilder&amp;lt;&amp;gt;();
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Вот и все! SmartBuilder-ы удобны для написания тестов, которые может прочитать даже ваш PM.&lt;/p&gt;
+&lt;p&gt;Если вам понравилась эта идея:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/PakhomovAlexander/java-tests-best-practices/tree/master/dsl-for-tests/src/test/java/io/github/pakhomovalexander/builders&#34;&gt;вот имплементация&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/PakhomovAlexander/java-tests-best-practices/blob/master/dsl-for-tests/src/test/java/io/github/pakhomovalexander/service/HostelImplTestWithoutSmartBuilder.java&#34;&gt;тут&lt;/a&gt; можно посмотреть тест без SmartBuilder&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/PakhomovAlexander/java-tests-best-practices/blob/master/dsl-for-tests/src/test/java/io/github/pakhomovalexander/service/HostelImplTestWithSmartBuilder.java&#34;&gt;тут&lt;/a&gt; тест с SmartBuilder&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Подписывайтесь на &lt;a href=&#34;https://t.me/toxic_enterprise&#34;&gt;душный канал&lt;/a&gt; и &lt;a href=&#34;https://twitter.com/alexandr_phmv&#34;&gt;твиттер&lt;/a&gt;. В следующей статье пойдем дальше. 🤘&lt;/p&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>

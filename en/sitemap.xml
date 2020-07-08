@@ -3,6 +3,136 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://pakhomovalexander.github.io/</loc>
+    <lastmod>2020-07-08T16:40:00+03:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://pakhomovalexander.github.io/ru/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://pakhomovalexander.github.io/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://pakhomovalexander.github.io/categories/</loc>
+    <lastmod>2020-07-08T16:40:00+03:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://pakhomovalexander.github.io/ru/categories/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://pakhomovalexander.github.io/categories/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://pakhomovalexander.github.io/tags/dsl/</loc>
+    <lastmod>2020-07-08T16:40:00+03:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://pakhomovalexander.github.io/ru/tags/dsl/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://pakhomovalexander.github.io/tags/dsl/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://pakhomovalexander.github.io/tags/java/</loc>
+    <lastmod>2020-07-08T16:40:00+03:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://pakhomovalexander.github.io/ru/tags/java/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://pakhomovalexander.github.io/tags/java/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://pakhomovalexander.github.io/tags/junit5/</loc>
+    <lastmod>2020-07-08T16:40:00+03:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://pakhomovalexander.github.io/ru/tags/junit5/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://pakhomovalexander.github.io/tags/junit5/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://pakhomovalexander.github.io/ru/</loc>
+    <lastmod>2020-07-08T16:40:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pakhomovalexander.github.io/tags/</loc>
+    <lastmod>2020-07-08T16:40:00+03:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://pakhomovalexander.github.io/ru/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://pakhomovalexander.github.io/tags/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://pakhomovalexander.github.io/tags/tdd/</loc>
+    <lastmod>2020-07-08T16:40:00+03:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://pakhomovalexander.github.io/ru/tags/tdd/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://pakhomovalexander.github.io/tags/tdd/"
+                />
+  </url>
+  
+  <url>
+    <loc>https://pakhomovalexander.github.io/ru/posts/smart-builder/</loc>
+    <lastmod>2020-07-08T16:40:00+03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://pakhomovalexander.github.io/categories/%D0%BD%D0%B0-%D0%BF%D1%83%D1%82%D0%B8-%D0%BA-tdd/</loc>
+    <lastmod>2020-07-08T16:40:00+03:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="ru"
+                href="https://pakhomovalexander.github.io/ru/categories/%D0%BD%D0%B0-%D0%BF%D1%83%D1%82%D0%B8-%D0%BA-tdd/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="en"
+                href="https://pakhomovalexander.github.io/categories/%D0%BD%D0%B0-%D0%BF%D1%83%D1%82%D0%B8-%D0%BA-tdd/"
+                />
+  </url>
+  
+  <url>
     <loc>https://pakhomovalexander.github.io/about/</loc>
     <priority>0</priority>
     <xhtml:link
@@ -19,52 +149,6 @@
   
   <url>
     <loc>https://pakhomovalexander.github.io/ru/about/</loc>
-  </url>
-  
-  <url>
-    <loc>https://pakhomovalexander.github.io/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="ru"
-                href="https://pakhomovalexander.github.io/ru/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://pakhomovalexander.github.io/"
-                />
-  </url>
-  
-  <url>
-    <loc>https://pakhomovalexander.github.io/categories/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="ru"
-                href="https://pakhomovalexander.github.io/ru/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://pakhomovalexander.github.io/categories/"
-                />
-  </url>
-  
-  <url>
-    <loc>https://pakhomovalexander.github.io/ru/</loc>
-  </url>
-  
-  <url>
-    <loc>https://pakhomovalexander.github.io/tags/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="ru"
-                href="https://pakhomovalexander.github.io/ru/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="en"
-                href="https://pakhomovalexander.github.io/tags/"
-                />
   </url>
   
 </urlset>
